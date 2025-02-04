@@ -1,6 +1,6 @@
 //
 //  GetTextView.swift
-//  Rent_app
+//  M10-App
 //
 //  Created by Kamal Abdullayev on 21.01.25.
 //

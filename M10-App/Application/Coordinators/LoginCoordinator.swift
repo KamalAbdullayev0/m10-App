@@ -1,8 +1,8 @@
 //
 //  LoginCoordinator.swift
-//  Rent_app
+//  M10-App
 //
-//  Created by Kamal Abdullayev on 21.01.25.
+//  Created by Kamal Abdullayev on 03.02.25.
 //
 import UIKit
 
@@ -19,18 +19,8 @@ final class LoginCoordinator {
         loginViewController.onLoginSuccess = { [weak self] in
             UserDefaults.standard.set(true, forKey: "isLoggedIn")
             self?.onFinish?()
-//            self?.showMainFlow()
         }
         window.rootViewController = loginViewController
         window.makeKeyAndVisible()
     }
-    
-//    private func showMainFlow() {
-//        let mainCoordinator = MainCoordinator(window: window)
-//        mainCoordinator.onLogout = { [weak self] in
-//            self?.logout()
-//        }
-//        mainCoordinator.start()
-//    }
-
 }

@@ -1,6 +1,6 @@
 //
 //  Resources.swift
-//  Atl_task
+//  M10-App
 //
 //  Created by Kamal Abdullayev on 12.01.25.
 //
@@ -10,14 +10,14 @@ import UIKit
 enum Resources {
     
     enum Colors {
-        static let primaryColor = UIColor(red: 0x6C / 255.0, green: 0xE9 / 255.0, blue: 0xC5 / 255.0, alpha: 1.0)
-        static let secondaryColor = UIColor(red: 0x02 / 255.0, green: 0x17 / 255.0, blue: 0x4D / 255.0, alpha: 1.0)
-        static let errorColor = UIColor(red: 0xEA / 255.0, green: 0x33 / 255.0, blue: 0x25 / 255.0, alpha: 1.0)
+        static let greenlightColor = UIColor(hexString: "#6CE9C5")
+        static let bluedarkColor = UIColor(hexString: "#02174D")
+        static let redColor = UIColor(red: 0xEA / 255.0, green: 0x33 / 255.0, blue: 0x25 / 255.0, alpha: 1.0)
         static let greyColor = UIColor(red: 0xF0 / 255.0, green: 0xF0 / 255.0, blue: 0xF0 / 255.0, alpha: 1.0)
         static let greyTextColor = UIColor(red: 0xBB / 255.0, green: 0xBB / 255.0, blue: 0xBB / 255.0, alpha: 1.0)
     }
     enum AssetConstant {
-            static let vectorIcon = "Assets/Icons/vector.pdf"
+            static let vectorIcon = "Assets/logo10lar.pdf"
             static let personIcon = "Icons/person.pdf"
             static let lockIcon = "Assets/Icons/lock.pdf"
             static let searchIcon = "Assets/Icons/search.pdf"
