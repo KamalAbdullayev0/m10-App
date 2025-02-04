@@ -1,8 +1,8 @@
 //
 //  AppCoordinator.swift
-//  Rent_app
+//  M10-App
 //
-//  Created by Kamal Abdullayev on 21.01.25.
+//  Created by Kamal Abdullayev on 03.02.25.
 //
 
 import UIKit
@@ -11,28 +11,22 @@ final class AppCoordinator {
     private let window: UIWindow
     private var loginCoordinator: LoginCoordinator?
     private var mainCoordinator: MainCoordinator?
+    private var getStartedCoordinator: GetStartedCoordinator?
 
     init(window: UIWindow) {
         self.window = window
     }
-
     func start() {
-        if isUserLoggedIn() {
-            showMainFlow()
-        } else {
-            showLoginFlow()
-        }
+            isUserLoggedIn() ? showMainFlow() : showGetStartedFlow()
     }
-
-    private func isUserLoggedIn() -> Bool {
-        return UserDefaults.standard.bool(forKey: "isLoggedIn")
+    
+    private func showGetStartedFlow() {
+        getStartedCoordinator = GetStartedCoordinator(window: window)
+        getStartedCoordinator?.start()
     }
 
     private func showLoginFlow() {
         loginCoordinator = LoginCoordinator(window: window)
-        loginCoordinator?.onFinish = { [weak self] in
-            self?.showMainFlow()
-        }
         loginCoordinator?.start()
     }
 
@@ -43,9 +37,14 @@ final class AppCoordinator {
         }
         mainCoordinator?.start()
     }
-
+    
+    
+    private func isUserLoggedIn() -> Bool {
+        return UserDefaults.standard.bool(forKey: "isLoggedIn")
+    }
     private func logout() {
         UserDefaults.standard.set(false, forKey: "isLoggedIn")
         showLoginFlow()
     }
+    
 }

@@ -14,7 +14,11 @@ final class TabbarController: UITabBarController {
     }
     
     private func configureTabs() {
+            
         let searchController = SearchViewModel()
+                searchController.onLogout = { [weak self] in
+                    self?.onLogout?() // Это передаст сигнал в `MainCoordinator`
+                }
         let profileController = ProfileViewModel()
 
         // Настройка для Search Tab
@@ -50,11 +54,11 @@ final class TabbarController: UITabBarController {
         tabBar.layer.masksToBounds = true
         
         // Настройка цвета для иконок и текста
-        tabBar.tintColor = Resources.Colors.primaryColor // Цвет для выбранного элемента
+        tabBar.tintColor = Resources.Colors.greenlightColor // Цвет для выбранного элемента
         tabBar.unselectedItemTintColor = Resources.Colors.greyTextColor // Цвет для невыбранных элементов
 
         // Настройка стиля текста для выбранных и невыбранных вкладок
-        UITabBarItem.appearance().setTitleTextAttributes([.foregroundColor: Resources.Colors.primaryColor], for: .selected)
+        UITabBarItem.appearance().setTitleTextAttributes([.foregroundColor: Resources.Colors.greenlightColor], for: .selected)
         UITabBarItem.appearance().setTitleTextAttributes([.foregroundColor: Resources.Colors.greyTextColor], for: .normal)
         
         // Добавление тени

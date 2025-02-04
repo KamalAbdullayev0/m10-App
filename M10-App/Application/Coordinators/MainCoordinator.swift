@@ -1,8 +1,8 @@
 //
-//  TabbarCoordinator.swift
-//  Rent_app
+//  MainCoordinator.swift
+//  M10-App
 //
-//  Created by Kamal Abdullayev on 21.01.25.
+//  Created by Kamal Abdullayev on 03.02.25.
 //
 import UIKit
 
@@ -18,7 +18,8 @@ final class MainCoordinator {
         let tabBarController = TabbarController()
         tabBarController.onLogout = { [weak self] in
                     self?.handleLogout()
-                }
+        }
+        
         window.rootViewController = tabBarController
         window.makeKeyAndVisible()
     }
