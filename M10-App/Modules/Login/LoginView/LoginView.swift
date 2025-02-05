@@ -7,50 +7,108 @@
 
 import UIKit
 
-final class LoginView: UIView {
-    let loginButton = UIButton(type: .system)
+final class LoginView: UIViewController {
+    private let viewModel: LoginViewModel
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-//        view.backgroundColor = .white
-        setupView()
+    var onLoginSuccess: (() -> Void)?
+    
+    init(viewModel: LoginViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
     }
-
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    private func setupView() {
-        backgroundColor = .white
+    private let logoView = SVGImageLoader.loadSVG(named: "logoO", width: 107, height: 120, cornerRadius: 20)
+    
+    private let bottomLabel: UILabel = {
+        let label = UILabel()
+        label.numberOfLines = 1
+        label.textAlignment = .center
+        label.font = UIFont.systemFont(ofSize: 17, weight: .medium)
+        label.textColor = .black
+        label.text = "Salam 👋"
+        return label
+    }()
+    private let emailField = CustomTextField(
+        placeholder: "Enter your email",
+        height: 60,
+        width: 335,
+        icon: UIImage(systemName: "person")
+    )
+    private let passwordField = CustomTextField(
+        placeholder: "Enter your password",
+        height: 60,
+        width: 335,
+        icon: UIImage(systemName: "lock")
+    )
+    
+    private lazy var loginButton: CustomButton = {
+        return CustomButton(buttonText: "Təsdiqlə", height: 60, width: 210) { [weak self] in
+            self?.handleLogin()
+        }
+    }()
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = .white
+        setupUI()
+        setupBindings()
+    }
+    private func setupUI() {
+        view.addSubview(logoView)
+        view.addSubview(bottomLabel)
+        view.addSubview(emailField)
+        view.addSubview(passwordField)
+        view.addSubview(loginButton)
         
-        let emailStack = createTextField(
-            
-            placeholder: "Enter your email"
-        )
-        let passwordStack = createTextField(
-                        placeholder: "Enter your password",
-            isPassword: true
-        )
-        
-        loginButton.setTitle("Login", for: .normal)
-        loginButton.backgroundColor = UIColor.systemGreen
-        loginButton.setTitleColor(.white, for: .normal)
-        loginButton.layer.cornerRadius = 20
-        loginButton.layer.masksToBounds = true
-        loginButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
-        
-        let stackView = UIStackView(arrangedSubviews: [emailStack, passwordStack, loginButton])
-        stackView.axis = .vertical
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.setCustomSpacing(10, after: emailStack)
-        stackView.setCustomSpacing(200, after: passwordStack)
-        
-        addSubview(stackView)
+        logoView.translatesAutoresizingMaskIntoConstraints = false
+        bottomLabel.translatesAutoresizingMaskIntoConstraints = false
+        emailField.translatesAutoresizingMaskIntoConstraints = false
+        passwordField.translatesAutoresizingMaskIntoConstraints = false
+        loginButton.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            stackView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -40),
-            stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 30),
-            stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -30)
+            logoView.centerXAnchor.constraint(equalTo:  view.safeAreaLayoutGuide.centerXAnchor),
+            logoView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 100),
+            logoView.widthAnchor.constraint(equalToConstant: 107),
+            logoView.heightAnchor.constraint(equalToConstant: 120),
+            
+            bottomLabel.centerXAnchor.constraint(equalTo:  view.safeAreaLayoutGuide.centerXAnchor),
+            bottomLabel.topAnchor.constraint(equalTo: logoView.bottomAnchor, constant: 20),
+            
+            emailField.centerXAnchor.constraint(equalTo:  view.safeAreaLayoutGuide.centerXAnchor),
+            emailField.topAnchor.constraint(equalTo: bottomLabel.bottomAnchor, constant: 40),
+            emailField.widthAnchor.constraint(equalToConstant: 335),
+            emailField.heightAnchor.constraint(equalToConstant: 60),
+            
+            passwordField.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
+            passwordField.topAnchor.constraint(equalTo: emailField.bottomAnchor, constant: 20),
+            passwordField.widthAnchor.constraint(equalToConstant: 335),
+            passwordField.heightAnchor.constraint(equalToConstant: 60),
+            
+            loginButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            loginButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -70),
+            loginButton.heightAnchor.constraint(equalToConstant: 60)
         ])
+    }
+
+    private func setupBindings() {
+        viewModel.onLoginSuccess = {
+            print("Login successful!")
+        }
+
+        viewModel.onLoginFailure = { message in
+            print("Login failed: \(message)")
+        }
+    }
+
+    @objc private func handleLogin() {
+        let email = emailField.text
+        let password = passwordField.text
+        viewModel.login(email: email, password: password)
+        print("sagol")
     }
 }

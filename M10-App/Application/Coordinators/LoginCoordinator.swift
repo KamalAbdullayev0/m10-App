@@ -15,7 +15,8 @@ final class LoginCoordinator {
     }
     
     func start() {
-        let loginViewController = LoginViewController()
+        let viewModel = LoginViewModel()
+        let loginViewController = LoginView(viewModel: viewModel)
         loginViewController.onLoginSuccess = { [weak self] in
             UserDefaults.standard.set(true, forKey: "isLoggedIn")
             self?.onFinish?()
