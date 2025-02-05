@@ -14,7 +14,6 @@ final class GetStartedCoordinator {
         self.window = window
     }
     
-
     func start() {
         let loginCoordinator = LoginCoordinator(window: window)
         loginCoordinator.onFinish = { [weak self] in

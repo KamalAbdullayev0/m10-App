@@ -26,14 +26,9 @@ final class LoginViewController: UIViewController {
     
     @objc private func handleLogin() {
 
-        let email = loginView.emailField.text ?? ""
-        let password = loginView.passwordField.text ?? ""
-        
-        guard !email.isEmpty, !password.isEmpty else {
-
+      
             print("Fields are empty")
             return
         }
-        onLoginSuccess?()
-    }
+    
 }

@@ -9,9 +9,11 @@ import UIKit
 
 final class AppCoordinator {
     private let window: UIWindow
+    private var networkManager: NetworkManager!
     private var loginCoordinator: LoginCoordinator?
     private var mainCoordinator: MainCoordinator?
     private var getStartedCoordinator: GetStartedCoordinator?
+//    private var noInternetCoordinator: NoInternetCoordinator?
 
     init(window: UIWindow) {
         self.window = window
@@ -37,8 +39,6 @@ final class AppCoordinator {
         }
         mainCoordinator?.start()
     }
-    
-    
     private func isUserLoggedIn() -> Bool {
         return UserDefaults.standard.bool(forKey: "isLoggedIn")
     }
@@ -47,4 +47,8 @@ final class AppCoordinator {
         showLoginFlow()
     }
     
+//    func showNoInternetFlow() {
+//        noInternetCoordinator = NoInternetCoordinator(window: window, lastCoordinator: self)
+//        noInternetCoordinator?.start()
+//    }
 }
