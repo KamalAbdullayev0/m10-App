@@ -3,7 +3,7 @@ import AVKit
 
 class CustomButton: UIView {
     
-    private let action: () -> Void
+    private var action: (() -> Void)?
 
     private let colorView: UIView = {
         let view = UIView()
@@ -55,7 +55,7 @@ class CustomButton: UIView {
     
     @objc private func buttonTapped() {
         print("salam")
-        action()
+        action?()
     }
 
     required init?(coder: NSCoder) {

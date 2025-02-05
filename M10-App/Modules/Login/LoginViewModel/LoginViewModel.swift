@@ -6,29 +6,23 @@
 //
 import UIKit
 
-final class LoginViewController: UIViewController {
+final class LoginViewModel: UIViewController {
     var onLoginSuccess: (() -> Void)?
+    var onLoginFailure: ((String) -> Void)?
     
-    private let loginView = LoginView()
-
-    override func loadView() {
-        view = loginView
-    }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        setupActions()
-    }
-    
-    private func setupActions() {
-        loginView.loginButton.addTarget(self, action: #selector(handleLogin), for: .touchUpInside)
-    }
-    
-    @objc private func handleLogin() {
-
-      
-            print("Fields are empty")
+    func login(email: String, password: String) {
+        guard !email.isEmpty, !password.isEmpty else {
+            onLoginFailure?("Fields are empty")
             return
         }
-    
+        
+        let isValid = email == "test@example.com" && password == "password123"
+        
+        if isValid {
+            onLoginSuccess?()
+        } else {
+            onLoginFailure?("Invalid credentials")
+        }
+        
+    }
 }
