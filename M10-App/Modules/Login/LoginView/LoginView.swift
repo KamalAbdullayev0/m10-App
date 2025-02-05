@@ -8,13 +8,11 @@
 import UIKit
 
 final class LoginView: UIView {
-    let emailField = UITextField()
-    let passwordField = UITextField()
     let loginButton = UIButton(type: .system)
-    private let bannerView = BannerView()
-
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
+//        view.backgroundColor = .white
         setupView()
     }
 
@@ -25,21 +23,12 @@ final class LoginView: UIView {
     private func setupView() {
         backgroundColor = .white
         
-        bannerView.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(bannerView)
-        
-        NSLayoutConstraint.activate([
-            bannerView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            bannerView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 30)
-        ])
-        
-        let emailStack = getTextView(
-            textField: emailField,
+        let emailStack = createTextField(
+            
             placeholder: "Enter your email"
         )
-        let passwordStack = getTextView(
-            textField: passwordField,
-            placeholder: "Enter your password",
+        let passwordStack = createTextField(
+                        placeholder: "Enter your password",
             isPassword: true
         )
         

@@ -12,7 +12,6 @@ class GetStartedViewModel {
     init(coordinator: LoginCoordinator) {
         self.coordinator = coordinator
     }
-
     func didTapGetStarted() {
         coordinator.start()
     }

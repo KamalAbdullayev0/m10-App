@@ -12,9 +12,9 @@ enum Resources {
     enum Colors {
         static let greenlightColor = UIColor(hexString: "#6CE9C5")
         static let bluedarkColor = UIColor(hexString: "#02174D")
-        static let redColor = UIColor(red: 0xEA / 255.0, green: 0x33 / 255.0, blue: 0x25 / 255.0, alpha: 1.0)
-        static let greyColor = UIColor(red: 0xF0 / 255.0, green: 0xF0 / 255.0, blue: 0xF0 / 255.0, alpha: 1.0)
-        static let greyTextColor = UIColor(red: 0xBB / 255.0, green: 0xBB / 255.0, blue: 0xBB / 255.0, alpha: 1.0)
+        static let redColor = UIColor(hexString: "#EA3325")
+        static let greyColor = UIColor(hexString: "#F0F0F0")
+        static let greyTextColor = UIColor(hexString: "#BBBBBB")
     }
     enum AssetConstant {
             static let vectorIcon = "Assets/logo10lar.pdf"
@@ -30,19 +30,17 @@ enum Resources {
             static let backButton = "Assets/Icons/back_button.pdf"
             static let noInternetIcon = "Assets/Icons/no_internet.pdf"
         }
-    
-    enum Fonts {
-        static func helveticaRegular(width size: CGFloat) -> UIFont {
-            UIFont(name: "Helvetica", size: size) ?? UIFont()
-            
-            
-        }
-    }
-    struct TextStyles {
-        static let largeTextStyle = UIFont.systemFont(ofSize: 28)
-        static let mediumTextStyle = UIFont.systemFont(ofSize: 17)
-        static let smallTextStyle = UIFont.systemFont(ofSize: 12)
-    }
+//    enum Fonts {
+//        static func helveticaRegular(width size: CGFloat) -> UIFont {
+//            UIFont(name: "Helvetica", size: size) ?? UIFont()
+//
+//        }
+//    }
+//    struct TextStyles {
+//        static let largeTextStyle = UIFont.systemFont(ofSize: 28)
+//        static let mediumTextStyle = UIFont.systemFont(ofSize: 17)
+//        static let smallTextStyle = UIFont.systemFont(ofSize: 12)
+//    }
     struct MainConst {
         static let regions: [String] = [
             "Binəqədi rayonu", "Qaradağ rayonu", "Xəzər rayonu", "Səbail rayonu",
@@ -67,6 +65,4 @@ enum Resources {
 //        static var reservation: ReservationModel?
 //        static var profileImage: String = ""
     }
-
-
 }
