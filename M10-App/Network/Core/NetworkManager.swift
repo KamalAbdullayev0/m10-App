@@ -12,14 +12,13 @@ struct RefreshTokenResponse: Codable {
     let accessToken: String
 }
 
+protocol NetworkManagerDelegate: AnyObject {
+    func didDetectNoInternet()
+}
+
 class NetworkManager {
-//    private let networkMonitor = NetworkMonitor.shared
-    private weak var appCoordinator: AppCoordinator?
-
-    init(appCoordinator: AppCoordinator) {
-        self.appCoordinator = appCoordinator
-    }
-
+    weak var delegate: NetworkManagerDelegate?
+    
     func request<T: Codable>(endpoint: Endpoint,
                              model: T.Type,
                              method: HTTPMethod = .get,
@@ -27,11 +26,12 @@ class NetworkManager {
                              encodingType: EncodingType = .url,
                              completion: @escaping((T?, String?) -> Void)) {
         
-//        guard networkMonitor.isConnected else {
-//            appCoordinator?.showNoInternetFlow()
-//            return
-//        }
-
+        guard NetworkMonitor.shared.isConnected else {
+            delegate?.didDetectNoInternet()
+            completion(nil, "Нет интернета")
+            return
+        }
+        
         AF.request("\(NetworkHelper.shared.baseURL)/\(endpoint.rawValue)",
                    method: method,
                    parameters: params,
@@ -58,17 +58,15 @@ class NetworkManager {
             }
         }
     }
-
-    // Обновление токена
     private func refreshToken(completion: @escaping (Bool) -> Void) {
         guard let refreshToken = AuthManager.shared.refreshToken else {
             completion(false)
             return
         }
-
+        
         let params: Parameters = ["refresh_token": refreshToken]
-
-        AF.request("\(NetworkHelper.shared.baseURL)/auth/refresh",
+        
+        AF.request("\(NetworkHelper.shared.baseURL)auth/refresh-token",
                    method: .post,
                    parameters: params,
                    encoding: JSONEncoding.default)

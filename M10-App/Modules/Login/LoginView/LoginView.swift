@@ -28,7 +28,7 @@ final class LoginView: UIViewController {
         label.numberOfLines = 1
         label.textAlignment = .center
         label.font = UIFont.systemFont(ofSize: 17, weight: .medium)
-        label.textColor = .black
+        label.textColor = Resources.Colors.blackColor
         label.text = "Salam 👋"
         return label
     }()
@@ -56,6 +56,7 @@ final class LoginView: UIViewController {
         view.backgroundColor = .white
         setupUI()
         setupBindings()
+        setupTapGesture()
     }
     private func setupUI() {
         view.addSubview(logoView)
@@ -93,6 +94,15 @@ final class LoginView: UIViewController {
             loginButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -70),
             loginButton.heightAnchor.constraint(equalToConstant: 60)
         ])
+    }
+    private func setupTapGesture() {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        tap.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
+    }
+
+    @objc private func dismissKeyboard() {
+        view.endEditing(true)
     }
 
     private func setupBindings() {
