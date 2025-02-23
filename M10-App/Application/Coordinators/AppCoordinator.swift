@@ -7,9 +7,9 @@
 
 import UIKit
 
-final class AppCoordinator: NetworkManagerDelegate {
+final class AppCoordinator {
+    
     private let window: UIWindow
-    private var networkManager: NetworkManager!
     private var loginCoordinator: LoginCoordinator?
     private var mainCoordinator: MainCoordinator?
     private var getStartedCoordinator: GetStartedCoordinator?
@@ -18,26 +18,40 @@ final class AppCoordinator: NetworkManagerDelegate {
     
     init(window: UIWindow) {
         self.window = window
-        self.networkManager = NetworkManager()
-        self.networkManager.delegate = self
+        NotificationCenter.default.addObserver(self, selector: #selector(didDetectNoInternet), name: .noInternetDetected, object: nil)
+        print("✅ AppCoordinator подписан на NotificationCenter")
     }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+        print("❌ AppCoordinator деинициализирован")
+    }
+    
     func start() {
-        isUserLoggedIn() ? showMainFlow() : showGetStartedFlow()
+        print("🔄 AppCoordinator start()")
+//        didDetectNoInternet()
+        hasValidToken() ? showMainFlow() : showGetStartedFlow()
     }
     
     private func showGetStartedFlow() {
+        print("➡️ Переход к потоку регистрации/начала")
         lastCoordinator = getStartedCoordinator
         getStartedCoordinator = GetStartedCoordinator(window: window)
+        getStartedCoordinator?.onFinish = { [weak self] in
+            self?.showLoginFlow()
+        }
         getStartedCoordinator?.start()
     }
     
     private func showLoginFlow() {
+        print("➡️ Переход к потоку входа")
         lastCoordinator = loginCoordinator
         loginCoordinator = LoginCoordinator(window: window)
         loginCoordinator?.start()
     }
     
     private func showMainFlow() {
+        print("➡️ Переход к главному потоку")
         lastCoordinator = mainCoordinator
         mainCoordinator = MainCoordinator(window: window)
         mainCoordinator?.onLogout = { [weak self] in
@@ -45,29 +59,57 @@ final class AppCoordinator: NetworkManagerDelegate {
         }
         mainCoordinator?.start()
     }
-    private func isUserLoggedIn() -> Bool {
-        return UserDefaults.standard.bool(forKey: "isLoggedIn")
-    }
-    private func logout() {
-        UserDefaults.standard.set(false, forKey: "isLoggedIn")
-        showLoginFlow()
+    
+    private func hasValidToken() -> Bool {
+        print("🔑 Проверка наличия валидного токена")
+        let accessToken = UserDefaults.standard.string(forKey: "accessToken")
+        let refreshToken = UserDefaults.standard.string(forKey: "refreshToken")
+        return accessToken != nil || refreshToken != nil
     }
     
-    func didDetectNoInternet() {
-        noInternetCoordinator = NoInternetCoordinator(window: window, lastCoordinator: self)
+    private func logout() {
+        print("🚪 Пользователь выходит из системы...")
+        UserDefaults.standard.removeObject(forKey: "accessToken")
+        UserDefaults.standard.removeObject(forKey: "refreshToken")
+        showGetStartedFlow()
+    }
+    
+    @objc private func didDetectNoInternet() {
+        print("⚠️ Обнаружена потеря интернета. Сохранение текущего координатора...")
+        lastCoordinator = currentCoordinator()
+        print("✅ Сохранен текущий координатор: \(String(describing: lastCoordinator))")
+        
+        noInternetCoordinator = NoInternetCoordinator(window: window)
+        noInternetCoordinator?.onInternetRestored = { [weak self] in
+            self?.didRestoreInternet()
+        }
         noInternetCoordinator?.start()
     }
-    func restoreLastFlow() {
-        func restoreLastFlow() {
-            if let lastCoordinator = lastCoordinator {
-                if let loginCoordinator = lastCoordinator as? LoginCoordinator {
-                    loginCoordinator.start()
-                } else if let getStartedCoordinator = lastCoordinator as? GetStartedCoordinator {
-                    getStartedCoordinator.start()
-                } else if let mainCoordinator = lastCoordinator as? MainCoordinator {
-                    mainCoordinator.start()
-                }
-            }
+    
+    @objc private func didRestoreInternet() {
+        print("✅ Интернет восстановлен. Восстановление предыдущего потока...")
+        noInternetCoordinator = nil
+        restoreLastFlow()
+        lastCoordinator = nil
+    }
+    
+    private func currentCoordinator() -> AnyObject? {
+        print("🔄 Определение текущего координатора")
+        return getStartedCoordinator ?? loginCoordinator ?? mainCoordinator
+    }
+    
+    private func restoreLastFlow() {
+        print("🔄 Восстановление последнего потока")
+        if let lastCoordinator = lastCoordinator as? LoginCoordinator {
+            lastCoordinator.start()
+        } else if let lastCoordinator = lastCoordinator as? GetStartedCoordinator {
+            lastCoordinator.start()
+        } else if let lastCoordinator = lastCoordinator as? MainCoordinator {
+            lastCoordinator.start()
+        } else {
+            print("⚠️ Нет сохраненного координатора. Показываем главный экран.")
+            showMainFlow()
         }
+        self.lastCoordinator = nil
     }
 }

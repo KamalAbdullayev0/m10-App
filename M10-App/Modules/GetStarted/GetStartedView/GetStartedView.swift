@@ -9,9 +9,9 @@ import UIKit
 
 class GetStartedView: UIViewController {
     private let viewModel: GetStartedViewModel
+    
     init(viewModel: GetStartedViewModel) {
         self.viewModel = viewModel
-        
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -92,9 +92,5 @@ class GetStartedView: UIViewController {
             bottomLabel.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
             
         ])
-    }
-    
-    @objc private func didTapGetStarted() {
-        viewModel.didTapGetStarted()
     }
 }

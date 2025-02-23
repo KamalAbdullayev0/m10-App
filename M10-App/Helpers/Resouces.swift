@@ -16,6 +16,9 @@ enum Resources {
         static let greyColor = UIColor(hexString: "#F0F0F0")
         static let greyTextColor = UIColor(hexString: "#BBBBBB")
         static let blackColor = UIColor(hexString: "#000000")
+        static let softGreyTextColor = UIColor(hexString: "#989898")
+        static let purple = UIColor(hexString: "#884CFA")
+
     }
     enum AssetConstant {
             static let vectorIcon = "Assets/logo10lar.pdf"

@@ -4,7 +4,7 @@ import AVKit
 class CustomButton: UIView {
     
     private var action: (() -> Void)?
-
+    
     private let colorView: UIView = {
         let view = UIView()
         view.backgroundColor = Resources.Colors.bluedarkColor
@@ -14,28 +14,30 @@ class CustomButton: UIView {
     }()
     
     private let actionButton: UIButton = {
-        
         let button = UIButton(type: .system)
-        button.backgroundColor = .white
-        button.setTitleColor(Resources.Colors.bluedarkColor, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 28, weight: .regular)
         button.layer.cornerRadius = 35
         return button
     }()
     
-    init(buttonText: String, height: CGFloat, width: CGFloat, action: @escaping () -> Void) {
+    init(buttonText: String, height: CGFloat, width: CGFloat,textColor: UIColor = Resources.Colors.bluedarkColor,
+         backgroundColor: UIColor = .white,fontSize: CGFloat = 28, action: @escaping () -> Void) {
         self.action = action
         super.init(frame: .zero)
         self.isUserInteractionEnabled = true
-
+        
         colorView.layer.cornerRadius = height / 2
         actionButton.layer.cornerRadius = height * 0.89 / 2
+        
         actionButton.setTitle(buttonText, for: .normal)
+        actionButton.setTitleColor(textColor, for: .normal)
+        actionButton.backgroundColor = backgroundColor
+        actionButton.titleLabel?.font = UIFont.systemFont(ofSize: fontSize, weight: .regular)
         actionButton.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
-
+        
         addSubview(colorView)
         addSubview(actionButton)
-
+        
         colorView.translatesAutoresizingMaskIntoConstraints = false
         actionButton.translatesAutoresizingMaskIntoConstraints = false
         
@@ -57,7 +59,7 @@ class CustomButton: UIView {
         print("salam")
         action?()
     }
-
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

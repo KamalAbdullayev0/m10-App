@@ -13,7 +13,6 @@ final class MainCoordinator {
     init(window: UIWindow) {
         self.window = window
     }
-    
     func start() {
         let tabBarController = TabbarController()
         tabBarController.onLogout = { [weak self] in

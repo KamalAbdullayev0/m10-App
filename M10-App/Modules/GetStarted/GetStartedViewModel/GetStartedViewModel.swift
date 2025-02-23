@@ -7,12 +7,9 @@
 import Foundation
 
 class GetStartedViewModel {
-    private let coordinator: LoginCoordinator
-
-    init(coordinator: LoginCoordinator) {
-        self.coordinator = coordinator
-    }
+    var onGetStarted: (() -> Void)?
+    
     func didTapGetStarted() {
-        coordinator.start()
+        onGetStarted?()
     }
 }
