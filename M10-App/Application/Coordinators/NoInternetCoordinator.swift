@@ -1,4 +1,3 @@
-//
 //  NoInternetCoordinator.swift
 //  M10-App
 //
@@ -8,46 +7,51 @@ import UIKit
 
 final class NoInternetCoordinator {
     private let window: UIWindow
-    private var lastCoordinator: Any?
+//    private var timer: Timer?
+    var onInternetRestored: (() -> Void)?
     
-    init(window: UIWindow, lastCoordinator: Any?) {
+    init(window: UIWindow) {
         self.window = window
-        self.lastCoordinator = lastCoordinator
-        
-        NetworkMonitor.shared.onNetworkStatusChange = { [weak self] isConnected in
-            if isConnected {
-                self?.restorePreviousFlow()
-            }
-        }
+        print("🌐 [NoInternetCoordinator] Инициализирован. Ожидание восстановления сети...")
+//        startCheckingInternet()
     }
     
     func start() {
-        let viewModel = NoInternetViewModel(appCoordinator: lastCoordinator as! AppCoordinator)
-        let noInternetViewController = NoInternetView(viewModel: viewModel)
+        print("📡 [NoInternetCoordinator] Запуск. Отображение экрана без интернета...")
         
+//        let viewModel = GetStartedViewModel()
+//        viewModel.onGetStarted = { [weak self] in
+//            self?.onFinish?()
+//        }
+//        let getStartedViewController = GetStartedView(viewModel: viewModel)
+        let viewModel = NoInternetViewModel()
+        let noInternetViewController = NoInternetView(viewModel: viewModel)
         window.rootViewController = noInternetViewController
         window.makeKeyAndVisible()
-        
-        Timer.scheduledTimer(withTimeInterval: 10.0, repeats: true) { [weak self] _ in
-            self?.checkAndRestore()
-        }
     }
     
-    private func checkAndRestore() {
-        if NetworkMonitor.shared.isConnected {
-            restorePreviousFlow()
-        }
-    }
+//    private func startCheckingInternet() {
+//        print("⏳ [NoInternetCoordinator] Ждем 15 секунд перед проверкой интернета...")
+//        timer = Timer.scheduledTimer(timeInterval: 15.0, target: self, selector: #selector(checkAndRestore), userInfo: nil, repeats: false)
+//    }
     
-    private func restorePreviousFlow() {
-        if let appCoordinator = lastCoordinator as? AppCoordinator {
-            appCoordinator.start()
-        } else if let mainCoordinator = lastCoordinator as? MainCoordinator {
-            mainCoordinator.start()
-        } else if let loginCoordinator = lastCoordinator as? LoginCoordinator {
-            loginCoordinator.start()
-        } else if let getStartedCoordinator = lastCoordinator as? GetStartedCoordinator {
-            getStartedCoordinator.start()
-        }
-    }
+//    @objc private func checkAndRestore() {
+//        guard NetworkMonitor.shared.isConnected else {
+//            print("❌ [NoInternetCoordinator] Интернет все еще отсутствует. Перезапуск таймера...")
+//            startCheckingInternet()
+//            return
+//        }
+//        print("✅ [NoInternetCoordinator] Интернет подключен. Отправка уведомления...")
+//        onInternetRestored?()
+//        cleanup()
+//    }
+    
+//    private func cleanup() {
+//        timer?.invalidate()
+//        timer = nil
+//    }
+//    
+//    deinit {
+//        cleanup()
+//    }
 }

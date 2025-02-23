@@ -7,15 +7,8 @@
 import Foundation
 
 class NoInternetViewModel {
-    private let appCoordinator: AppCoordinator
 
-    init(appCoordinator: AppCoordinator) {
-        self.appCoordinator = appCoordinator
-    }
 
-    func checkInternetAndRestore() {
-        if NetworkMonitor.shared.isConnected {
-            appCoordinator.restoreLastFlow()
-        }
-    }
+
+
 }

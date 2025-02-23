@@ -53,9 +53,12 @@ final class LoginView: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        viewModel.onLoginSuccess = { [weak self] in
+            print("✅ onLoginSuccess в LoginView сработал!")
+            self?.onLoginSuccess?()
+        }
         view.backgroundColor = .white
         setupUI()
-        setupBindings()
         setupTapGesture()
     }
     private func setupUI() {
@@ -105,20 +108,9 @@ final class LoginView: UIViewController {
         view.endEditing(true)
     }
 
-    private func setupBindings() {
-        viewModel.onLoginSuccess = {
-            print("Login successful!")
-        }
-
-        viewModel.onLoginFailure = { message in
-            print("Login failed: \(message)")
-        }
-    }
-
     @objc private func handleLogin() {
         let email = emailField.text
         let password = passwordField.text
         viewModel.login(email: email, password: password)
-        print("sagol")
     }
 }

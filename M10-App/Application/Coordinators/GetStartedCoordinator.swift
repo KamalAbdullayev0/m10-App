@@ -15,11 +15,10 @@ final class GetStartedCoordinator {
     }
     
     func start() {
-        let loginCoordinator = LoginCoordinator(window: window)
-        loginCoordinator.onFinish = { [weak self] in
+        let viewModel = GetStartedViewModel()
+        viewModel.onGetStarted = { [weak self] in
             self?.onFinish?()
         }
-        let viewModel = GetStartedViewModel(coordinator: loginCoordinator)
         let getStartedViewController = GetStartedView(viewModel: viewModel)
         window.rootViewController = getStartedViewController
         window.makeKeyAndVisible()
