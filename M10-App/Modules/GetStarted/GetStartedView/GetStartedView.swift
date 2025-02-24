@@ -9,7 +9,7 @@ import UIKit
 
 class GetStartedView: UIViewController {
     private let viewModel: GetStartedViewModel
-    
+
     init(viewModel: GetStartedViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -93,4 +93,5 @@ class GetStartedView: UIViewController {
             
         ])
     }
+
 }

@@ -32,9 +32,7 @@ final class NetworkMonitor {
             guard let self = self else { return }
             let newStatus = path.status == .satisfied
             if self.isConnected != newStatus {
-                self.isConnected = newStatus
-                print("🌐 NetworkMonitor: Обновлено isConnected = \(newStatus)")
-            }
+                self.isConnected = newStatus            }
             
             if !self.didReceiveInitialPath {
                 self.didReceiveInitialPath = true
@@ -52,6 +50,24 @@ final class NetworkMonitor {
             completion()
         } else {
             initialStatusHandlers.append(completion)
+        }
+    }
+    func forceCheckConnection(completion: @escaping (Bool) -> Void) {
+        let evaluator = NWPathMonitor()
+        evaluator.start(queue: DispatchQueue.global(qos: .background))
+        evaluator.pathUpdateHandler = { [weak self] path in
+            let newStatus = path.status == .satisfied
+            DispatchQueue.main.async {
+                self?.updateConnectionStatus(newStatus)
+                completion(newStatus)
+                evaluator.cancel()
+            }
+        }
+    }
+    
+    private func updateConnectionStatus(_ newStatus: Bool) {
+        if isConnected != newStatus {
+            isConnected = newStatus
         }
     }
 }
