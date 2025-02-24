@@ -42,7 +42,9 @@ class NoInternetView: UIViewController {
     
     private lazy var noInternetButton: CustomButton = {
         return CustomButton(buttonText: "Yenidən cəhd et", height: 60, width: 250,textColor: .white, backgroundColor: Resources.Colors.purple,
-                            fontSize: 18) {}
+                            fontSize: 18){ [weak self] in
+            self?.retryNetworkCheck()
+        }
     }()
     
     override func viewDidLoad() {
@@ -77,7 +79,12 @@ class NoInternetView: UIViewController {
             descriptionLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             
             noInternetButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            noInternetButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -60)
+            noInternetButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            
+            noInternetButton.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor,constant: 250)
         ])
+    }
+    private func retryNetworkCheck() {
+        viewModel.checkInternetConnection()
     }
 }
