@@ -8,26 +8,23 @@ import UIKit
 
 final class LoginCoordinator {
     private let window: UIWindow
-    private var mainCoordinator: MainCoordinator?
     var onFinish: (() -> Void)?
     
     init(window: UIWindow) {
         self.window = window
     }
     
+    
     func start() {
+        print("🚀 LoginCoordinator стартовал")
         let viewModel = LoginViewModel()
-        let loginViewController = LoginView(viewModel: viewModel)
-        loginViewController.onLoginSuccess = { //[weak self] in
-            print("✅ Успешный вход! Переход в главный экран")
-            UserDefaults.standard.set(true, forKey: "isLoggedIn")
-            print("🔄 Создаем и запускаем MainCoordinator")
-            self.mainCoordinator = MainCoordinator(window: self.window /*?? UIWindow()*/)
-            self.mainCoordinator?.start()
-            self.onFinish?()
+        viewModel.onLoginSuccess = { [weak self] in
+            print("✅ Успешный вход, LoginCoordinator завершает работу")
+            self?.onFinish?()
         }
-        print("🔄 Настройка rootViewController для LoginViewController")
+        let loginViewController = LoginView(viewModel: viewModel)
         window.rootViewController = loginViewController
         window.makeKeyAndVisible()
+        print("📌 LoginView установлен как rootViewController")
     }
 }

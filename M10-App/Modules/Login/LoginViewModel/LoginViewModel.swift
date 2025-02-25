@@ -16,29 +16,31 @@ final class LoginViewModel {
     func login(email: String, password: String) {
         guard !email.isEmpty, !password.isEmpty else {
             print("❌ Ошибка: Пустые поля email или password")
-            onLoginFailure?("Fields are empty")
+            onLoginFailure?("Məlumatları düzgün doldurun!")
             return
         }
         
         let params: [String: Any] = ["username": email, "password": password]
         print("📤 Отправка запроса с параметрами: \(params)")
         
-        manager.request(endpoint: .login, model: AuthResponse.self, method: .post, params: params, encodingType: .json) { [weak self] response, error in
-            
+        manager.request(endpoint: .login,
+                        model: AuthResponse.self,
+                        method: .post,
+                        params: params,
+                        encodingType: .json){
+            [weak self] response, error in
             if let error = error {
-                print("❌ Ошибка при запросе: \(error)")
-                self?.onLoginFailure?(error)
+                print("❌ Ошибка запроса: \(error)")
+                self?.onLoginFailure?("İstifadəçi adı və ya parol yanlışdır!")
                 return
             }
-            
             if let response = response {
-                print("✅ Успешный вход! Получен токен: \(response.accessToken)")
+                print("✅ Успешный логин, токен: \(response.accessToken)")
                 AuthManager.shared.accessToken = response.accessToken
                 AuthManager.shared.refreshToken = response.refreshToken
-                print("✅ onLoginSuccess в LoginViewModel сработал!")
                 self?.onLoginSuccess?()
             } else {
-                print("⚠️ Неизвестная ошибка: Пустой response")
+                print("❌ Неизвестная ошибка при логине")
                 self?.onLoginFailure?("An unknown error occurred")
             }
         }

@@ -1,6 +1,4 @@
 import UIKit
-import AVKit
-
 class CustomButton: UIView {
     
     private var action: (() -> Void)?
@@ -56,7 +54,6 @@ class CustomButton: UIView {
     }
     
     @objc private func buttonTapped() {
-        print("salam")
         action?()
     }
     
