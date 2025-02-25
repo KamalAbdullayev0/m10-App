@@ -19,7 +19,9 @@ final class AppCoordinator {
     
     init(window: UIWindow) {
         self.window = window
-        NotificationCenter.default.addObserver(self, selector: #selector(didDetectNoInternet), name: .noInternetDetected, object: nil)
+        NotificationCenter.default.addObserver(
+            self, selector: #selector(didDetectNoInternet),
+            name: .noInternetDetected, object: nil)
     }
     
     deinit {
@@ -27,12 +29,14 @@ final class AppCoordinator {
     }
     
     func start() {
+//        didDetectNoInternet()
         hasValidToken() ? showMainFlow() : showGetStartedFlow()
     }
     
     private func showGetStartedFlow() {
         getStartedCoordinator = GetStartedCoordinator(window: window)
         lastCoordinator = getStartedCoordinator
+        
         getStartedCoordinator?.onFinish = { [weak self] in
             self?.showLoginFlow()
         }
@@ -42,12 +46,16 @@ final class AppCoordinator {
     private func showLoginFlow() {
         loginCoordinator = LoginCoordinator(window: window)
         lastCoordinator = loginCoordinator
+        
+        loginCoordinator?.onFinish = { [weak self] in
+            self?.showMainFlow()
+        }
         loginCoordinator?.start()
     }
     
     private func showMainFlow() {
         mainCoordinator = MainCoordinator(window: window)
-        lastCoordinator = loginCoordinator
+        lastCoordinator = mainCoordinator
         mainCoordinator?.onLogout = { [weak self] in
             self?.logout()
         }
@@ -69,26 +77,26 @@ final class AppCoordinator {
     @objc private func didDetectNoInternet() {
         noInternetCoordinator = NoInternetCoordinator(window: window)
         noInternetCoordinator?.onInternetRestored = { [weak self] in
-                        self?.didRestoreInternet()
-                    }
+            self?.didRestoreInternet()
+        }
         noInternetCoordinator?.start()
     }
-
+    
     @objc private func didRestoreInternet() {
-           noInternetCoordinator = nil
-           guard let lastCoordinator = lastCoordinator else {
-               showMainFlow()
-               return
-           }
-           switch lastCoordinator {
-           case let coordinator as LoginCoordinator:
-               coordinator.start()
-           case let coordinator as GetStartedCoordinator:
-               coordinator.start()
-           case let coordinator as MainCoordinator:
-               coordinator.start()
-           default:
-               showMainFlow()
-           }
-       }
+        noInternetCoordinator = nil
+        guard let lastCoordinator = lastCoordinator else {
+            showMainFlow()
+            return
+        }
+        switch lastCoordinator {
+        case let coordinator as LoginCoordinator:
+            coordinator.start()
+        case let coordinator as GetStartedCoordinator:
+            coordinator.start()
+        case let coordinator as MainCoordinator:
+            coordinator.start()
+        default:
+            showMainFlow()
+        }
+    }
 }

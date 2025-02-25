@@ -10,8 +10,6 @@ import UIKit
 final class LoginView: UIViewController {
     private let viewModel: LoginViewModel
     
-    var onLoginSuccess: (() -> Void)?
-    
     init(viewModel: LoginViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -20,7 +18,7 @@ final class LoginView: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     private let logoView = SVGImageLoader.loadSVG(named: "logoO", width: 107, height: 120, cornerRadius: 20)
     
     private let bottomLabel: UILabel = {
@@ -50,29 +48,43 @@ final class LoginView: UIViewController {
             self?.handleLogin()
         }
     }()
+    private let customAlert: CustomAlertView = {
+        let alert = CustomAlertView(
+            frame: CGRect(x: 0, y: 0, width: 360, height: 20),
+            message: "İnternet bağlantısı yoxdur.",
+            backgroundColor: Resources.Colors.redColor,
+            textColor: .white
+        )
+        return alert
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        viewModel.onLoginSuccess = { [weak self] in
-            print("✅ onLoginSuccess в LoginView сработал!")
-            self?.onLoginSuccess?()
-        }
+        print("✅ viewDidLoad в LoginView сработал")
         view.backgroundColor = .white
-        setupUI()
+        setupView()
+        viewModel.onLoginFailure = { [weak self] reason in
+            self?.showTemporaryAlert(reason: reason)
+        }
+        customAlert.isHidden = true
         setupTapGesture()
     }
-    private func setupUI() {
+    
+    
+    private func         setupView() {
         view.addSubview(logoView)
         view.addSubview(bottomLabel)
         view.addSubview(emailField)
         view.addSubview(passwordField)
         view.addSubview(loginButton)
+        view.addSubview(customAlert)
         
         logoView.translatesAutoresizingMaskIntoConstraints = false
         bottomLabel.translatesAutoresizingMaskIntoConstraints = false
         emailField.translatesAutoresizingMaskIntoConstraints = false
         passwordField.translatesAutoresizingMaskIntoConstraints = false
         loginButton.translatesAutoresizingMaskIntoConstraints = false
+        customAlert.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
             logoView.centerXAnchor.constraint(equalTo:  view.safeAreaLayoutGuide.centerXAnchor),
@@ -95,7 +107,11 @@ final class LoginView: UIViewController {
             
             loginButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             loginButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -70),
-            loginButton.heightAnchor.constraint(equalToConstant: 60)
+            loginButton.heightAnchor.constraint(equalToConstant: 60),
+            customAlert.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            customAlert.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+            customAlert.widthAnchor.constraint(equalToConstant: 360),
+            customAlert.heightAnchor.constraint(equalToConstant: 45)
         ])
     }
     private func setupTapGesture() {
@@ -103,14 +119,33 @@ final class LoginView: UIViewController {
         tap.cancelsTouchesInView = false
         view.addGestureRecognizer(tap)
     }
-
-    @objc private func dismissKeyboard() {
-        view.endEditing(true)
-    }
-
+    
     @objc private func handleLogin() {
         let email = emailField.text
         let password = passwordField.text
+        print("📩 Нажата кнопка входа с email: \(email), password: \(password)")
         viewModel.login(email: email, password: password)
     }
-}
+    
+    @objc private func dismissKeyboard() {
+        print("📌 Клавиатура скрыта")
+        view.endEditing(true)
+    }
+    
+    private func showTemporaryAlert(reason: String) {
+        customAlert.updateMessage(reason)
+        customAlert.alpha = 0
+        customAlert.isHidden = false
+        
+        UIView.animate(withDuration: 0.2, animations: {
+            self.customAlert.alpha = 1
+        }) { _ in
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                UIView.animate(withDuration: 0.2) {
+                    self.customAlert.alpha = 0
+                } completion: { _ in
+                    self.customAlert.isHidden = true
+                }
+            }
+        }
+    }}

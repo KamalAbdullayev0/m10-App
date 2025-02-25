@@ -18,7 +18,6 @@ final class MainCoordinator {
         tabBarController.onLogout = { [weak self] in
                     self?.handleLogout()
         }
-        
         window.rootViewController = tabBarController
         window.makeKeyAndVisible()
     }
