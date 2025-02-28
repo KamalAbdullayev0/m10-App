@@ -10,6 +10,7 @@ import UIKit
 final class HomeViewController: UIViewController {
     
     private let viewModel: HomeViewModel
+    weak var coordinator: HomeCoordinator?
     private var dropdownViewController: DropdownViewController!
     private var dropdownState: DropdownState = .expanded
     
@@ -73,17 +74,14 @@ final class HomeViewController: UIViewController {
     }
     
     private func didTapProfile() {
-        let profileVC = ProfileViewController()
-        profileVC.modalPresentationStyle = .overFullScreen
-        present(profileVC, animated: true)
+        coordinator?.showProfile()
     }
     
     private func toggleDropdownState() {
-            let newState: DropdownState = dropdownState == .expanded ? .collapsed : .expanded
-            dropdownState = newState
-            dropdownViewController.animateTransition(to: newState)
-        }
+        let newState: DropdownState = dropdownState == .expanded ? .collapsed : .expanded
+        dropdownState = newState
+        dropdownViewController.animateTransition(to: newState)
+    }
     
-
+    
 }
-
