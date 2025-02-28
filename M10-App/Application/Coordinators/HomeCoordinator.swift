@@ -6,7 +6,7 @@
 //
 import UIKit
 
-final class MainCoordinator {
+final class HomeCoordinator {
     var onLogout: (() -> Void)?
     private let window: UIWindow
     
@@ -14,11 +14,10 @@ final class MainCoordinator {
         self.window = window
     }
     func start() {
-        let tabBarController = TabbarController()
-        tabBarController.onLogout = { [weak self] in
-                    self?.handleLogout()
-        }
-        window.rootViewController = tabBarController
+        let viewModel = HomeViewModel()
+        let homeViewController = HomeViewController(viewModel: viewModel)
+        
+        window.rootViewController = homeViewController
         window.makeKeyAndVisible()
     }
     

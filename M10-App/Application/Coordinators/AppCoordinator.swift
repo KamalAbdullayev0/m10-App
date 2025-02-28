@@ -11,7 +11,7 @@ final class AppCoordinator {
     
     private let window: UIWindow
     private var loginCoordinator: LoginCoordinator?
-    private var mainCoordinator: MainCoordinator?
+    private var homeCoordinator: HomeCoordinator?
     private var getStartedCoordinator: GetStartedCoordinator?
     private var noInternetCoordinator: NoInternetCoordinator?
     
@@ -54,12 +54,12 @@ final class AppCoordinator {
     }
     
     private func showMainFlow() {
-        mainCoordinator = MainCoordinator(window: window)
-        lastCoordinator = mainCoordinator
-        mainCoordinator?.onLogout = { [weak self] in
+        homeCoordinator = HomeCoordinator(window: window)
+        lastCoordinator = homeCoordinator
+        homeCoordinator?.onLogout = { [weak self] in
             self?.logout()
         }
-        mainCoordinator?.start()
+        homeCoordinator?.start()
     }
     
     private func hasValidToken() -> Bool {
@@ -93,7 +93,7 @@ final class AppCoordinator {
             coordinator.start()
         case let coordinator as GetStartedCoordinator:
             coordinator.start()
-        case let coordinator as MainCoordinator:
+        case let coordinator as HomeCoordinator:
             coordinator.start()
         default:
             showMainFlow()

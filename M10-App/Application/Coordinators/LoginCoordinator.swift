@@ -16,15 +16,12 @@ final class LoginCoordinator {
     
     
     func start() {
-        print("🚀 LoginCoordinator стартовал")
         let viewModel = LoginViewModel()
         viewModel.onLoginSuccess = { [weak self] in
-            print("✅ Успешный вход, LoginCoordinator завершает работу")
             self?.onFinish?()
         }
         let loginViewController = LoginView(viewModel: viewModel)
         window.rootViewController = loginViewController
         window.makeKeyAndVisible()
-        print("📌 LoginView установлен как rootViewController")
     }
 }
