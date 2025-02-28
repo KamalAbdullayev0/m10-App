@@ -22,6 +22,9 @@ final class AppCoordinator {
         NotificationCenter.default.addObserver(
             self, selector: #selector(didDetectNoInternet),
             name: .noInternetDetected, object: nil)
+        NotificationCenter.default.addObserver(
+            self, selector: #selector(handleUserDidLogout),
+            name: .userDidLogout, object: nil)
     }
     
     deinit {
@@ -29,7 +32,7 @@ final class AppCoordinator {
     }
     
     func start() {
-//        didDetectNoInternet()
+        //        didDetectNoInternet()
         hasValidToken() ? showMainFlow() : showGetStartedFlow()
     }
     
@@ -99,4 +102,13 @@ final class AppCoordinator {
             showMainFlow()
         }
     }
+    @objc private func handleUserDidLogout() {
+        logout()
+    }
+    
+}
+
+extension Notification.Name {
+    static let userDidLogout = Notification.Name("userDidLogout")
+    static let noInternetDetected = Notification.Name("noInternetDetected")
 }

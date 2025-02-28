@@ -8,10 +8,6 @@ import Alamofire
 import Foundation
 import Network
 
-extension Notification.Name {
-    static let noInternetDetected = Notification.Name("noInternetDetected")
-}
-
 struct RefreshTokenResponse: Codable {
     let accessToken: String
 }

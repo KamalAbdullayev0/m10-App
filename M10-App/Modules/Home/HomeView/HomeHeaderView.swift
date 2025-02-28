@@ -14,7 +14,7 @@ final class HomeHeaderView: UIView {
     
     private lazy var profileButton: UIButton = {
         let button = UIButton()
-        let config = UIImage.SymbolConfiguration(pointSize: 46, weight: .regular)
+        let config = UIImage.SymbolConfiguration(pointSize: 42, weight: .regular)
         button.setImage(UIImage(systemName: "person.circle.fill")?.withConfiguration(config), for: .normal)
         button.tintColor = .white
         button.addTarget(self, action: #selector(handleProfileTap), for: .touchUpInside)
@@ -87,7 +87,7 @@ final class HomeHeaderView: UIView {
                 dropdownButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
                 dropdownButton.centerYAnchor.constraint(equalTo: centerYAnchor),
                 dropdownButton.widthAnchor.constraint(equalToConstant: 28),
-                dropdownButton.heightAnchor.constraint(equalToConstant: 28),
+                dropdownButton.heightAnchor.constraint(equalToConstant: 26),
         ])
     }
     
