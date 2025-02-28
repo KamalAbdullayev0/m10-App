@@ -140,7 +140,7 @@ final class LoginView: UIViewController {
         UIView.animate(withDuration: 0.2, animations: {
             self.customAlert.alpha = 1
         }) { _ in
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) {
                 UIView.animate(withDuration: 0.2) {
                     self.customAlert.alpha = 0
                 } completion: { _ in
