@@ -6,7 +6,7 @@
 //
 
 import UIKit
-
+//chng name
 final class LoginView: UIViewController {
     private let viewModel: LoginViewModel
     
@@ -71,7 +71,7 @@ final class LoginView: UIViewController {
     }
     
     
-    private func         setupView() {
+    private func setupView() {
         view.addSubview(logoView)
         view.addSubview(bottomLabel)
         view.addSubview(emailField)

@@ -38,13 +38,14 @@ struct MenuItem {
 // MARK: - Constants
 enum Constants {
     static let dropdownExpandedHeightMultiplier: CGFloat = 0.82
-    static let dropdownCollapsedHeightMultiplier: CGFloat = 0.08
+    static let dropdownCollapsedHeightMultiplier: CGFloat = 0.09
     static let animationDuration: TimeInterval = 0.4
     static let cornerRadius: CGFloat = 45
     static let shadowOpacity: Float = 0.1
     static let shadowRadius: CGFloat = 12
     static let headerHeight: CGFloat = 100
 }
+
 // MARK: - Extensions
 extension UIView {
     func addShadow(opacity: Float, radius: CGFloat) {

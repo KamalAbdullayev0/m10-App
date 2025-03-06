@@ -7,7 +7,7 @@
 import UIKit
 
 final class DropdownHeaderView: UIView {
-    
+    var onOptionSelected: ((String) -> Void)?
     var onCloseButtonTap: (() -> Void)?
     
     private lazy var closeButton: UIButton = {
@@ -17,6 +17,14 @@ final class DropdownHeaderView: UIView {
         button.addTarget(self, action: #selector(handleCloseTap), for: .touchUpInside)
         return button
     }()
+    // В вашем DropdownHeaderView
+    private lazy var dropdownSelector: DropdownSelectorView<String> = {
+            let dropdown = DropdownSelectorView<String>(options: ["Яблоко", "Банан", "Вишня"])
+            dropdown.onOptionSelected = { [weak self] selectedOption in
+                self?.onOptionSelected?(selectedOption)
+            }
+            return dropdown
+        }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -29,14 +37,20 @@ final class DropdownHeaderView: UIView {
     
     private func setupUI() {
         addSubview(closeButton)
+        addSubview(dropdownSelector)
         
         closeButton.translatesAutoresizingMaskIntoConstraints = false
+        dropdownSelector.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
             closeButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
             closeButton.centerYAnchor.constraint(equalTo: centerYAnchor),
             closeButton.widthAnchor.constraint(equalToConstant: 30),
-            closeButton.heightAnchor.constraint(equalToConstant: 30)
+            closeButton.heightAnchor.constraint(equalToConstant: 30),
+            dropdownSelector.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
+                       dropdownSelector.trailingAnchor.constraint(equalTo: closeButton.leadingAnchor, constant: -10),
+                       dropdownSelector.centerYAnchor.constraint(equalTo: centerYAnchor),
+                       dropdownSelector.heightAnchor.constraint(equalToConstant: 50)
         ])
     }
     

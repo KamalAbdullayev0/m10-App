@@ -39,7 +39,7 @@ class CustomButton: UIView {
         colorView.translatesAutoresizingMaskIntoConstraints = false
         actionButton.translatesAutoresizingMaskIntoConstraints = false
         
-        NSLayoutConstraint.activate([
+        NSLayoutConstraint.activate([ //SnapKit
             colorView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             colorView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             colorView.widthAnchor.constraint(equalToConstant: width),

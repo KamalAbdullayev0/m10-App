@@ -13,8 +13,8 @@ enum LoginError: Error {
         switch self {
         case .invalidCredentials:
             return "İstifadəçi adı və ya parol yanlışdır!"
-        case .networkError(let message):
-            return "Şəbəkə xətası: \(message)"
+        case .networkError(_):
+            return "İstifadəçi adı və ya parol yanlışdır!"
         case .unknownError:
             return "Bilinməyən xəta baş verdi."
         }

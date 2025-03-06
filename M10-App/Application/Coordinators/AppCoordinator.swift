@@ -7,6 +7,8 @@
 
 import UIKit
 
+
+// Protocol usage
 final class AppCoordinator {
     
     private let window: UIWindow
@@ -33,7 +35,7 @@ final class AppCoordinator {
     
     func start() {
         //        didDetectNoInternet()
-        hasValidToken() ? showMainFlow() : showGetStartedFlow()
+        hasValidToken() ? showMainFlow() : showGetStartedFlow() //ternary operator
     }
     
     private func showGetStartedFlow() {
@@ -66,7 +68,7 @@ final class AppCoordinator {
     }
     
     private func hasValidToken() -> Bool {
-        let accessToken = UserDefaults.standard.string(forKey: "accessToken")
+        let accessToken = UserDefaults.standard.string(forKey: "accessToken") //USER Deafults class 
         let refreshToken = UserDefaults.standard.string(forKey: "refreshToken")
         return accessToken != nil || refreshToken != nil
     }

@@ -14,7 +14,6 @@ final class LoginCoordinator {
         self.window = window
     }
     
-    
     func start() {
         let viewModel = LoginViewModel()
         viewModel.onLoginSuccess = { [weak self] in

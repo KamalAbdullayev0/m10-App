@@ -1,3 +1,9 @@
+//
+//  DropdownViewController.swift
+//  M10-App
+//
+//  Created by Kamal Abdullayev on 26.02.25.
+//
 import UIKit
 
 final class DropdownViewController: UIViewController {
@@ -12,6 +18,7 @@ final class DropdownViewController: UIViewController {
         return view
     }()
     
+    
     private let grabberView: UIView = {
         let view = UIView()
         view.backgroundColor = .lightGray
@@ -20,10 +27,12 @@ final class DropdownViewController: UIViewController {
         return view
     }()
     
+    //UIKIt bottom sheet modal present 3 
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
         setupGestures()
+        
     }
     
     private func setupUI() {
@@ -92,7 +101,8 @@ final class DropdownViewController: UIViewController {
     }
     
     func animateTransition(to state: DropdownState) {
-        let heightMultiplier = state == .expanded ? Constants.dropdownExpandedHeightMultiplier * 1.2195 : Constants.dropdownCollapsedHeightMultiplier
+        let heightMultiplier = state == .expanded ?
+        Constants.dropdownExpandedHeightMultiplier * 1.2195 : Constants.dropdownCollapsedHeightMultiplier
         let yOffset = view.frame.height * (1 - heightMultiplier)
         
         UIView.animate(withDuration: Constants.animationDuration,

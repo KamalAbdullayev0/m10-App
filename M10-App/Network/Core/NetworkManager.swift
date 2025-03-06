@@ -27,7 +27,7 @@ final class NetworkManager {
         NetworkMonitor.shared.waitForInitialStatus { [weak self] in
             guard let self = self else { return }
             guard NetworkMonitor.shared.isConnected else {
-                NotificationCenter.default.post(name: .noInternetDetected, object: nil)
+                NotificationCenter.default.post(name: .noInternetDetected, object: nil) //BaseNotificateionCenter class
                 completion(nil, "Нет соединения с интернетом")
                 return
             }

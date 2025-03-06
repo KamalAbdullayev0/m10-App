@@ -14,6 +14,7 @@ enum EncodingType {
 
 enum Endpoint: String {
     case login = "auth/sign-in"
+    
     case refreshToken = "auth/refresh-token"
 
     case initialReservation = "reservation/initial"
